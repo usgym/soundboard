@@ -538,14 +538,23 @@ audio.onended = () => {
 
 function playNext(){
 
-  if(queue.length===0) return;
+  // stop ALL currently playing audio first
+  activeAudios.forEach(audio => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
 
-  const next=queue.shift();
+  activeAudios = [];
 
+  // then play next in queue
+  if(queue.length === 0) {
+    nowPlaying.textContent = "Now Playing: None";
+    return;
+  }
+
+  const next = queue.shift();
   renderQueue();
-
   playSound(next);
-
 }
 
 function stopAll() {
