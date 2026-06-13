@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>LAUREMONT ATHLETICS ARENA CONTROL</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #1e90ff;
+  --secondary: #ffe81c;
+  --bg: #0a0f1a;
+  --panel: #121c2e;
+}
+
+body {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  color: var(--secondary);
+  background: #05070f;
+  overflow-x: hidden;
+}
+
+/* BASE LAYER */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.18), transparent 40%),
+    radial-gradient(circle at 70% 20%, rgba(160, 0, 255, 0.20), transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(255, 230, 0, 0.10), transparent 50%);
+  animation: drift 12s ease-in-out infinite alternate;
+  z-index: -2;
+}
+
+/* 🌊 MOVING WAVES LAYER */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  background:
+    repeating-radial-gradient(circle at 50% 50%,
+      rgba(0,255,255,0.08) 0px,
+      rgba(0,255,255,0.08) 2px,
+      transparent 6px,
+      transparent 40px),
+    repeating-radial-gradient(circle at 30% 70%,
+      rgba(160,0,255,0.06) 0px,
+      rgba(160,0,255,0.06) 2px,
+      transparent 8px,
+      transparent 60px);
+  animation: waveMove 18s linear infinite;
+  z-index: -1;
+  opacity: 0.8;
+}
+
+/* ✨ RANDOM FLOATING ENERGY */
+@keyframes drift {
+  0% {
+    transform: translate(-2%, -2%) scale(1);
+  }
+  50% {
+    transform: translate(2%, 3%) scale(1.05);
+  }
+  100% {
+    transform: translate(-1%, 2%) scale(1.02);
+  }
+}
+
+/* 🌊 CONTINUOUS WAVE MOTION */
+@keyframes waveMove {
+  0% {
+    transform: rotate(0deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.2);
+  }
+}
+
+/* ===== ANIMATED GLOW VOLUME SLIDER ===== */
+
+#volumeSlider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 250px;
+  height: 10px;
+  border-radius: 20px;
+  outline: none;
+  display: block;
+  margin: 10px auto;
+
+  /* animated glowing background */
+  background: linear-gradient(
+    90deg,
+    #00ffff,
+    #a000ff,
+    #ffe81c,
+    #00ffff
+  );
+  background-size: 300% 100%;
+  animation: glowMove 3s linear infinite;
+
+  box-shadow: 0 0 12px rgba(0,255,255,0.5);
+}
+
+/* animated glow movement */
+@keyframes glowMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+/* Chrome/Safari thumb */
+#volumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow:
+    0 0 10px #00ffff,
+    0 0 20px #a000ff,
+    0 0 30px #ffe81c;
+  margin-top: -4px;
+}
+
+/* Firefox thumb */
+#volumeSlider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow:
+    0 0 10px #00ffff,
+    0 0 20px #a000ff,
+    0 0 30px #ffe81c;
+}
+
+#volumeSlider.playing {
+  animation: sliderPulse 1s ease-in-out infinite, glowMove 3s linear infinite;
+}
+
+@keyframes sliderPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(0,255,255,0.4);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(160,0,255,0.7), 0 0 30px rgba(0,255,255,0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(0,255,255,0.4);
+  }
+}
+
+#volumeValue {
+  display: inline-block;
+  min-width: 60px;
+  text-align: left;
+  color: #00ffff;
+  text-shadow: 0 0 8px #00ffff;
+  font-family: 'Orbitron', sans-serif;
+  animation: meterFlicker 0.15s infinite alternate;
+}
+
+@keyframes meterFlicker {
+  0% {
+    opacity: 0.7;
+    transform: translateY(0px);
+    text-shadow: 0 0 6px #00ffff, 0 0 12px #a000ff;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-1px);
+    text-shadow: 0 0 12px #00ffff, 0 0 20px #a000ff, 0 0 30px #ffe81c;
+  }
+}
+
+/* HEADER */
+header {
+  padding: 15px;
+  text-align: center;
+  background: var(--panel);
+  border-bottom: 3px solid var(--primary);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.brand img {
+  width: 150px;
+  height: 140px;
+  border-radius: 10px;
+}
+
+/* ✨ ANIMATED TITLE BACK */
+.title {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  animation: glowMove 3s infinite alternate;
+}
+
+.sub {
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+/* ANIMATION */
+@keyframes glowMove {
+  0% {
+    text-shadow: 0 0 5px var(--primary);
+    transform: translateY(0px);
+  }
+  100% {
+    text-shadow: 0 0 18px #00ffcc;
+    transform: translateY(-2px);
+  }
+}
+
+/* TOP CONTROLS */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+#stopAll { background: #ff2e2e; color: white; }
+#playNext { background: #00c853; color: white; }
+#fadeOut { background: #002aff; color: white; }
+#clearQueue { background: #ff9800; color: black; }
+#djModeBtn { background: var(--primary); color: white; }
+
+/* MAIN LAYOUT */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 20px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.card {
+  flex: 1;
+  min-width: 240px;
+  max-width: 280px;
+  background: var(--panel);
+  border-radius: 15px;
+  padding: 15px;
+  border: 1px solid #2a3550;
+}
+
+.card h2 {
+  margin-top: 0;
+  color: var(--secondary);
+}
+
+/* 🔥 BUTTONS NOW SIDE BY SIDE */
+.buttonGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+button {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+}
+
+/* COLORS */
+.crowd { background: var(--primary); color: white; }
+.momentum { background: #00c853; color: white; }
+.fx { background: #ff9800; color: black; }
+.win { background: #ff2e2e; color: white; }
+
+/* QUEUE */
+.queue {
+  position: fixed;
+  right: 10px;
+  top: 150px;
+  width: 240px;
+  background: #111a2a;
+  border: 1px solid #2a3550;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.queue-item {
+  font-size: 13px;
+  border-bottom: 1px solid #222;
+  padding: 5px;
+}
+
+#nowPlaying{
+  margin-top:10px;
+  font-size:14px;
+  color:#00ffff;
+  text-align:center;
+}
+
+.meterWrap{
+  width:300px;
+  height:12px;
+  background:#222;
+  border-radius:20px;
+  margin:10px auto;
+  overflow:hidden;
+}
+
+#meterBar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(
+    90deg,
+    #00ffff,
+    #a000ff,
+    #ffe81c
+  );
+  transition:.15s;
+}
+
+#volumeSlider{
+  display:block;
+  width:250px;
+  margin:10px auto;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="brand">
+    <img src="logo.png" alt="logo" onerror="this.style.display='none'">
+
+    <div>
+      <div class="title">LAUREMONT ATHLETICS SOUND SYSTEM</div>
+      <div class="sub">TITANS GYM AUDIO SYSTEM</div>
+    </div>
+  </div>
+
+  <div class="controls">
+  <button id="stopAll">Stop</button>
+  <button id="playNext">Next</button>
+  <button id="fadeOut">Fade Out</button>
+  <button id="clearQueue">Clear</button>
+  <button id="djModeBtn">DJ Mode: OFF</button>
+</div>
+
+<div id="nowPlaying">Now Playing: None</div>
+
+<div class="meterWrap">
+  <div id="meterBar"></div>
+</div>
+
+<div style="text-align:center; margin-top:10px;">
+  <div style="font-weight:bold; letter-spacing:3px; color:#00ffff; margin-bottom:6px;">
+    VOLUME: <span id="volumeValue">100%</span>
+  </div>
+
+  <input id="volumeSlider" type="range" min="0" max="100" value="100">
+</div>
+
+</header>
+
+<!-- MAIN -->
+<div class="container">
+
+  <div class="card">
+    <h2>Pre Game</h2>
+    <div class="buttonGrid">
+      <button class="momentum" onclick="queueSound('sounds/mlghorn.mp3')">MLG HORN</button>
+      <button class="momentum" onclick="queueSound('sounds/fluxlandxl.mp3')">FLUXLAND XL</button>
+      <button class="momentum" onclick="queueSound('sounds/areyouready.mp3')">ARE YOU READY?</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Game SFX</h2>
+    <div class="buttonGrid">
+      <button class="crowd" onclick="queueSound('sounds/defense.mp3')">DEFENSE</button>
+      <button class="crowd" onclick="queueSound('sounds/offense.mp3')">GO TITANS</button>
+      <button class="crowd" onclick="queueSound('sounds/mlghorn.mp3')">MLG HORN</button>
+      <button class="crowd" onclick="queueSound('sounds/oilers.mp3')">OILERS GOAL HORN</button>
+      <button class="crowd" onclick="queueSound('sounds/bruins.mp3')">BRUINS GOAL HORN</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Music</h2>
+    <div class="buttonGrid">
+      <button class="fx" onclick="queueSound('sounds/allofthelights.mp3')">ALL OF THE LIGHTS</button>
+      <button class="fx" onclick="queueSound('sounds/allthestars.mp3')">ALL THE STARS</button>
+      <button class="fx" onclick="queueSound('sounds/narcos.mp3')">NARCOS</button>
+      <button class="fx" onclick="queueSound('sounds/blindinglights.mp3')">BLINDING LIGHTS</button>
+      <button class="fx" onclick="queueSound('sounds/superhero(i).mp3')">SUPERHERO (I)</button>
+      <button class="fx" onclick="queueSound('sounds/callmebyyourname.mp3')">CALL ME BY YOUR NAME (I)</button>
+      <button class="fx" onclick="queueSound('sounds/touchthesky.mp3')">TOUCH THE SKY</button>
+      <button class="fx" onclick="queueSound('sounds/unforgettable.mp3')">UNFORGETTABLE</button>
+      <button class="fx" onclick="queueSound('sounds/rightaboveit.mp3')">RIGHT ABOVE IT</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Post Game</h2>
+    <div class="buttonGrid">
+      <button class="win" onclick="queueSound('sounds/win1.mp3')">VICTORY SONG</button>
+      <button class="win" onclick="queueSound('sounds/mlghorn.mp3')">MLG HORN</button>
+      <button class="win" onclick="queueSound('sounds/hornx2.mp3')">HORN x2</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- QUEUE -->
+<div class="queue">
+  <h3>🎧 Queue</h3>
+  <div id="queueList"></div>
+
+  <button onclick="playNext()">▶ Next</button>
+  <button onclick="clearQueue()">🧹 Clear</button>
+</div>
+
+<script>
+
+let queue = [];
+let activeAudios = [];
+let djMode = false;
+
+const queueList = document.getElementById("queueList");
+const meterBar = document.getElementById("meterBar");
+const nowPlaying = document.getElementById("nowPlaying");
+const volumeSlider = document.getElementById("volumeSlider");
+const volumeValue = document.getElementById("volumeValue");
+
+function renderQueue(){
+
+  queueList.innerHTML="";
+
+  queue.forEach((item,index)=>{
+
+    const div=document.createElement("div");
+    div.className="queue-item";
+    div.textContent=(index+1)+". "+item.name;
+
+    queueList.appendChild(div);
+
+  });
+
+}
+
+function queueSound(file){
+
+  const name=file.split("/").pop();
+
+  const item={
+    file:file,
+    name:name
+  };
+
+  if(djMode){
+
+    queue.push(item);
+    renderQueue();
+
+  }else{
+
+    playSound(item);
+
+  }
+
+}
+
+function playSound(item){
+
+  const audio=new Audio(item.file);
+
+  audio.volume=volumeSlider.value/100;
+
+  activeAudios.push(audio);
+
+  nowPlaying.textContent =
+    "Now Playing: " + item.name;
+
+audio.play();
+  
+  volumeSlider.classList.add("playing");
+
+  animateMeter();
+
+audio.onended = () => {
+
+  volumeSlider.classList.remove("playing");
+
+  activeAudios = activeAudios.filter(a => a !== audio);
+
+  if(queue.length > 0)
+
+    activeAudios=
+      activeAudios.filter(a=>a!==audio);
+
+    if(queue.length>0){
+
+      const next=queue.shift();
+
+      renderQueue();
+
+      playSound(next);
+
+    }
+
+  };
+
+}
+
+function playNext(){
+
+  if(queue.length===0) return;
+
+  const next=queue.shift();
+
+  renderQueue();
+
+  playSound(next);
+
+}
+
+function stopAll() {
+  activeAudios.forEach(audio => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
+
+  activeAudios = []; 
+  nowPlaying.textContent = "Now Playing: None";
+}
+
+function clearQueue(){
+
+  queue=[];
+
+  renderQueue();
+
+}
+
+function fadeOutAll(){
+
+  activeAudios.forEach(audio=>{
+
+    const fade=setInterval(()=>{
+
+      if(audio.volume>0.05){
+
+        audio.volume-=0.05;
+
+      }else{
+
+        audio.pause();
+        audio.currentTime = 0;
+
+        clearInterval(fade);
+
+      }
+
+    },100);
+
+  });
+
+}
+
+function animateMeter(){
+
+  let width = 20 + Math.random()*80;
+
+  meterBar.style.width = width + "%";
+
+  setTimeout(()=>{
+    meterBar.style.width = "0%";
+  },500);
+
+}
+
+document.getElementById("fadeOut").onclick =
+  fadeOutAll;
+
+document.getElementById("playNext").onclick =
+  playNext;
+
+document.getElementById("clearQueue").onclick =
+  clearQueue;
+
+document.getElementById("djModeBtn").onclick = ()=>{
+
+  djMode = !djMode;
+
+  document.getElementById("djModeBtn").innerText =
+    djMode ? "DJ Mode: ON" : "DJ Mode: OFF";
+
+};
+
+volumeSlider.addEventListener("input", () => {
+
+  const value = volumeSlider.value;
+
+  // update text
+  volumeValue.textContent = value + "%";
+
+  // fake "DJ meter flicker effect"
+  volumeValue.style.transform = `scale(${0.95 + Math.random() * 0.1})`;
+
+  volumeValue.style.letterSpacing = (Math.random() * 2) + "px";
+
+  volumeValue.style.opacity = 0.8 + Math.random() * 0.2;
+
+  // update audio volume
+  activeAudios.forEach(audio => {
+    audio.volume = value / 100;
+  });
+
+});
+
+function clearQueue(){
+  queue = [];
+  renderQueue();
+}
+
+document.getElementById("stopAll").onclick = stopAll;
+document.getElementById("playNext").onclick = playNext;
+document.getElementById("clearQueue").onclick = clearQueue;
+document.getElementById("djModeBtn").onclick = () => {
+  djMode = !djMode;
+  document.getElementById("djModeBtn").innerText =
+    djMode ? "DJ Mode: ON" : "DJ Mode: OFF";
+};
+
+</script>
+
+</body>
+</html>
