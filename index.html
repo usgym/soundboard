@@ -475,25 +475,20 @@ function renderQueue(){
 }
 
 function queueSound(file){
+  
+  const btn = event.target;
 
-  const name=file.split("/").pop();
-
-  const item={
-    file:file,
-    name:name
+  const item = {
+    file: file,
+    name: btn ? btn.innerText : file.split("/").pop()
   };
 
   if(djMode){
-
     queue.push(item);
     renderQueue();
-
-  }else{
-
+  } else {
     playSound(item);
-
   }
-
 }
 
 function playSound(item){
